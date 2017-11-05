@@ -1,0 +1,37 @@
+{
+  "name": "lfp-print-from-cloud",
+  "version": "0.0.1",
+  "description": "Print from cloud for HP LFP printers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nadimz/lfp-print-from-cloud.git"
+  },
+  "keywords": [
+    "lfp",
+    "print",
+    "ipp",
+    "cloud"
+  ],
+  "author": "Nadim Zubidat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nadimz/lfp-print-from-cloud/issues"
+  },
+  "homepage": "https://github.com/nadimz/lfp-print-from-cloud#readme",
+  "dependencies": {
+    "adal-angular": "^1.0.15",
+    "blob-util": "^1.3.0",
+    "express": "^4.16.2",
+    "express-urlrewrite": "^1.2.0",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
+    "ipp": "^2.0.0",
+    "path": "^0.12.7",
+    "webpack": "^3.8.1",
+    "webpack-dev-middleware": "^1.12.0"
+  }
+}

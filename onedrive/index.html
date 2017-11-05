@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+  <title>HP LFP Print From OneDrive</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/scripts/utils.js"></script>
+  <script src="/scripts/adal.js"></script>
+</head>
+<body>
+  <header class="page-header">
+    <div class="container">
+      <nav>
+		<a href="/">
+          <h1>
+		    <img src="/resources/HP_logo_72MD.png" class="hplogo" />
+			&nbsp; LFP Print From Cloud
+          </h1>
+        </a>
+		<h1>
+            <img src="https://cfl.dropboxstatic.com/static/images/brand/logotype_white-vflRG5Zd8.svg" class="logo" />
+        </h1>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container file-browser">
+    <a href="#" onClick=getMySite() class="app">OneDrive</button></a>
+    <div id="authed-section" style="display:none;">
+      <ul id="files"></ul>
+    </div>
+    
+    <div id="print-section" style="display:none;">
+      <p><a id="doc"></a>  will be now downloaded and printed. Please wait..</p>
+    </div>
+  </div>
+  
+  <script>
+    var accessToken;
+    var tokenCookie = "onedriveAccessToken";
+	var oneDriveEP = 'https://graph.microsoft.com';
+
+	function getMySite() {
+		var headers = new Headers();
+		var bearer = "Bearer " + accessToken;
+		headers.append("Authorization", bearer);
+		var options = {
+			method: "GET",
+			headers: headers
+		};
+		
+		fetch("https://graph.microsoft.com/v1.0/me?$select=mySite", options)
+			.then(function (response) {
+				var contentType = response.headers.get("content-type");
+				if (response.status === 200 && contentType && contentType.indexOf("application/json") !== -1) {
+					response.json()
+						.then(function (data) {
+							console.log(JSON.stringify(data, null, 4));
+						})
+				} else {
+					console.log('unexpted reponse format');
+				}
+			})
+	}
+	
+	function onUserLoggedIn(errorDescription, idToken, error) {
+		if (error) {
+			console.log('onUserLoggedIn: ' + error);
+		} else {	
+			console.log('onUserLoggedIn: ' + idToken);
+		}
+	}
+	
+	/*
+	 * OneDrive config
+	 */
+	var config = {
+		tenant: 'hp.com',
+		clientId: '288d8b32-fec5-4026-878f-71e669399101',
+		redirectUri: 'https://127.0.0.1:4443/onedrive',
+		callback: onUserLoggedIn
+	}
+	
+	console.log('getting auth context');
+	var authenticationContext = new AuthenticationContext(config);	
+	
+	if (authenticationContext.isCallback(window.location.hash)) {
+		console.log('handleWindowCallback');
+		authenticationContext.handleWindowCallback();
+	} else {
+		var user = authenticationContext.getCachedUser();
+		if (user) {
+			//console.log(JSON.stringify(user, null, 4));
+			authenticationContext.acquireToken(oneDriveEP, function (errorDesc, token, error) {
+				if (error) {
+					authenticationContext.acquireTokenRedirect(oneDriveEP, null, null);
+					console.log('acquireToken error: ' + error);
+				} else {
+					console.log('acquireToken: ' + token);
+					accessToken = token;
+				}			
+			});
+		} else {
+		authenticationContext.login();
+		}
+	} 	
+  </script>
+</body>
+</html>

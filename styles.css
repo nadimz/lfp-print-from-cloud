@@ -1,0 +1,226 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.5;
+}
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #007ee5;
+  width: 100%;
+  height: 50px;
+  padding: 0 0 0 0;
+  z-index: 1;
+}
+
+#header-container {
+  display: block;
+  max-width: 800px;
+  margin: auto;
+  padding: 10px 0 15px 0;
+  height: 25px;
+  line-height: 25px;
+}
+#title {
+  display: flex;
+  float: left;
+  margin-left: 10px;
+  margin-bottom: 50px
+}
+#title-link {
+  text-decoration: none;
+}
+#title-logo {
+  float: left;
+  height: 30px;
+  width: 30px;
+}
+#title-text {
+  display: inline-block;
+  float: left;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 300;
+  padding-left: 5px;
+}
+#subtitle {
+  float: right;
+  margin-right: 10px;
+  margin-top: 3px;
+}
+#subtitle-logo {
+  width: 100px;
+}
+
+#main {
+  display: block;
+  position: relative;
+  top: 50px;
+  background: gray;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  z-index: 0;
+}
+#files-table {
+  display: block;
+  float: left;
+  width: 100%;
+  border-collapse: collapse;
+}
+#files-table-body {
+  width: 500px;
+}
+#files-table tr {
+  margin-left: 5px;
+  color: #007ee5;
+  font-size: 16px;
+  width: 100%;
+  max-width: 800px;
+}
+#files-table td {
+  color: #696969;
+  font-size: 16px;
+  transition-duration: 0.10s;
+  text-decoration: none;
+  text-align: left;
+  margin: 2px 0 0 10px;
+  vertical-align: middle;
+  line-height: 50px;
+  padding-left: 50px;
+  width: 800px;
+  max-width: 800px;
+
+  background-position: 8px 8px;
+  background-repeat: no-repeat;
+  background-size: 35px;
+}
+#files-table td:hover {
+	color: #007ee5;
+  cursor: pointer;
+}
+#files-table td:active {
+  transform: translateY(2px);
+}
+.popup {
+  position: fixed;
+  top: 20%;
+  left: 20%;
+  visibility: hidden;
+  width: 60%;
+  background-color: white;
+  color: #696969;
+  text-align: center;
+  border: 1px solid #007ee5;
+  border-radius: 6px;
+  padding: 100px 0 100px 0;
+  z-index: 2;
+}
+.show {
+  visibility: visible;
+  /*-webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s*/
+}
+#button-print {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px 0 10px 0;
+  width: 120px;
+  border-radius: 3px;
+  background-color: #007ee5;
+  color: white;
+  text-align: center;
+  z-index: 3;
+  cursor: pointer;
+}
+#button-cancel {
+  position: absolute;
+  bottom: 0;
+  right: 130px;
+  padding: 10px 0 10px 0;
+  width: 120px;
+  border-radius: 3px;
+  background-color: #696969;
+  color: white;
+  text-align: center;
+  z-index: 3;
+  cursor: pointer;
+}
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+.container {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.container.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 50px;
+}
+.container.file-browser {
+  display: flex;
+  padding-top: 5px;
+}
+.app {
+  display: fles;
+  border-radius: 3px;
+  background-color: #007ee5;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  padding: 10px 15px;
+  text-decoration: none;
+  width: 150px;
+  height: 50px;
+  text-align: center;
+  margin: auto;
+  vertical-align: middle;
+  line-height: 50px;
+}
+.app:active {
+  background-color: #007ee5;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.file-row {
+  border-radius: 3px;
+  background-color: #fff;
+  color: #007ee5;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  text-decoration: none;
+  width: 100%;
+  text-align: left;
+  margin: 5px 0px;
+  vertical-align: middle;
+  line-height: 50px;
+  padding-left: 50px;
+
+  background-image: url('/resources/file_icon.svg');
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: 35px;
+}
+.file-row:hover {
+	background-color: #007ee5;
+	color: white;
+}
+.file-row:active {
+  background-color: #007ee5;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}

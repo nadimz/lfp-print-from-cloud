@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <title>HP LFP Print From Cloud</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="header">
+    <div id="header-container">
+			<div id="title">
+        <a id="title-link" href="/">
+          <img src="/resources/HP_logo_72MD.png" id="title-logo" />
+          <div id=title-text>LFP Print From Cloud</div>
+        </a>
+			</div>
+			<div id="subtitle">
+					<img src="https://cfl.dropboxstatic.com/static/images/brand/logotype_white-vflRG5Zd8.svg" id="subtitle-logo" />
+			</div>
+    </div>
+  </div>
+
+  <div id="main">
+    <div class="popup" id="print-confirmation">
+      Send file for pinting
+      <div id="button-print">
+        Print
+      </div>
+      <div id="button-cancel">
+        Cancel
+      </div>
+    </div>
+  	<table id="files-table" style="width:100%" style="display:none">
+      <thead id="files-table-header">
+      </thead>
+      <tbody id="files-table-body">
+      </tbody>
+    </table>
+  	<!--div id="print-section" style="display:none;">
+  		<p><a id="doc"></a>  will be now downloaded and printed. Please wait..</p>
+  	</div-->
+  </div>
+
+	<script src="/scripts/Dropbox-sdk.min.js"></script>
+	<script src="/scripts/utils.js"></script>
+	<script src="/scripts/app-dropbox.js"></script>
+</body>
+</html>
