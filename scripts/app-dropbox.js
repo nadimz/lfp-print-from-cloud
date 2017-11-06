@@ -1,6 +1,8 @@
 var tokenCookie = "dropboxAccessToken";
 var CLIENT_ID = 'dn9zszriuvvvtn1';
 var dbx;
+var currentFile;
+var currentFilePath;
 
 if (isAuthenticated()) {
 	showPageSection('files-table');
@@ -125,6 +127,7 @@ function renderFiles(folder, files) {
 			onFileClicked(file.name, file.path_display, file['.tag'])
 		}, false);
 
+		fileRowEntry.classList.add("color-darker-gray");
 		/**
 		 * Set the file icon
 		 */
@@ -157,9 +160,32 @@ function onFileClicked (name, path, tag) {
 	if (tag == 'folder') {
 		listFolder(path);
 	} else {
+		currentFile     = name;
+		currentFilePath = path;
 		var printConfiration = document.getElementById("print-confirmation");
-    printConfiration.classList.toggle("show");
+    printConfiration.classList.toggle("show-popup");
 	}
+}
+
+function onPrintClicked() {
+	// remove the popup
+	var printConfiration = document.getElementById("print-confirmation");
+	printConfiration.classList.toggle("show-popup");
+
+	// send file for printing
+	//printDocument(currentFile, currentFilePath);
+
+	// notify the user
+	var toast = document.getElementById("print-toast");
+	toast.innerHTML = "File will now be printed";
+	toast.classList.toggle("show-toast");
+	setTimeout(function(){toast.classList.toggle("show-toast");}, 3000);
+}
+
+function onCancelClicked() {
+	// remove the popup
+	var printConfiration = document.getElementById("print-confirmation");
+	printConfiration.classList.toggle("show-popup");
 }
 
 /**

@@ -4,13 +4,13 @@
   <title>HP LFP Print From Cloud</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
-<body>
-  <div id="header">
+<body class="background-light-gray">
+  <div id="header" class="background-hp-blue">
     <div id="header-container">
 			<div id="title">
         <a id="title-link" href="/">
           <img src="/resources/HP_logo_72MD.png" id="title-logo" />
-          <div id=title-text>LFP Print From Cloud</div>
+          <div id=title-text class="color-white">LFP Print From Cloud</div>
         </a>
 			</div>
 			<div id="subtitle">
@@ -20,12 +20,14 @@
   </div>
 
   <div id="main">
-    <div class="popup" id="print-confirmation">
-      Send file for pinting
-      <div id="button-print">
+    <div id="print-toast" class="toast background-dark-gray color-white">
+    </div>
+    <div class="popup background-white color-darker-gray" id="print-confirmation">
+      <div class="popup-text">Send file for pinting</div>
+      <div id="button-print" class="background-hp-blue color-white" onclick="onPrintClicked()">
         Print
       </div>
-      <div id="button-cancel">
+      <div id="button-cancel" class="background-dark-gray color-white" onclick="onCancelClicked()">
         Cancel
       </div>
     </div>
