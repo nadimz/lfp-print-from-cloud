@@ -61,11 +61,11 @@ function listFolder(folder) {
 	dbx.filesListFolder({path: folder})
 		.then(function(response) {
 			renderFiles(folder, response.entries);
+			hideSpinner();
 		})
 		.catch(function(error) {
 			console.error(error);
 		});
-	hideSpinner();
 }
 
 /**
