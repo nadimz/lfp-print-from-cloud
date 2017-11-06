@@ -13,6 +13,7 @@ if (isAuthenticated()) {
 	 */
 	dbx = new Dropbox({ accessToken: getAccessToken() });
 	listFolder('');
+	renderPath('');
 } else {
 	/**
 	 * Start OAuth2 process
@@ -56,18 +57,15 @@ function getAccessToken() {
  * @param  {string} folder [the path of the folder to list]
  */
 function listFolder(folder) {
+	showSpinner();
 	dbx.filesListFolder({path: folder})
 		.then(function(response) {
 			renderFiles(folder, response.entries);
-			if(folder == '') {
-				renderPath('Dropbox');
-			} else {
-				renderPath(folder);
-			}
 		})
 		.catch(function(error) {
 			console.error(error);
 		});
+	hideSpinner();
 }
 
 /**
@@ -113,27 +111,72 @@ function renderPathEntry(path, fullPath) {
 	console.log('rendering ' + path);
 	var pathContainer = document.getElementById("path");
 	var pathEntry = document.createElement('div');
+	pathEntry.setAttribute('id', fullPath);
 	pathEntry.classList.add("path-entry");
 	pathEntry.classList.add("color-darker-gray");
 	pathEntry.innerHTML = path;
-	pathEntry.addEventListener("click", function() {
-		listFolder(path);
-	}, false);
 	pathContainer.appendChild(pathEntry);
 }
 
-function renderPath(currentPath) {
-	if(!currentPath) {
+function setPathAncestorsAsLinks(path) {
+	var pathContainer = document.getElementById("path");
+	var children = pathContainer.children;
+	for (var i = 0; i < children.length; i++) {
+  	var child = children[i];
+		if((child.id != 'undefined') && (child.id != path)) {
+			console.log('setting ' + child.id + ' as a link');
+			child.addEventListener("click", function() {
+				onPathClicked(this.id);
+			}, false);
+			child.classList.remove("color-darker-gray");
+			child.classList.add("color-hp-blue");
+			child.style.cursor = "pointer";
+		}
+	}
+}
+
+function renderPath(path) {
+	if(path === '') {
+		renderPathEntry('Home', '/');
 		return;
 	}
-	var idxBegin = 1;
-	var idxEnd;
-	if ((idxEnd = currentPath.indexOf('/', idxBegin)) < 0) {
-		idxEnd = currentPath.length;
+
+	renderPathEntry('>');
+
+	var pathText = path.slice(path.lastIndexOf('/') + 1, path.length);
+	renderPathEntry(pathText, path);
+
+	setPathAncestorsAsLinks(path);
+}
+
+function onPathClicked(path) {
+	console.log('onPathClicked: ' + path);
+	/**
+	 * List the folder and remove all children paths
+	 */
+	var found = false;
+	var pathContainer = document.getElementById("path");
+ 	var children = pathContainer.children;
+	var numOfChildren = children.length;
+	for (var i = numOfChildren - 1; true ; i--) {
+		var child = children[i];
+
+		if (child.id === path) {
+			found = true;
+ 			child.classList.remove("color-hp-blue");
+			child.classList.add("color-darker-gray");
+			child.style.cursor = "normal";
+			break;
+		} else {
+			pathContainer.removeChild(child);
+		}
+ 	}
+
+	if (path === '/') {
+		path = '';
 	}
 
-	var pathText = currentPath.slice(idxBegin, idxEnd);
-	renderPathEntry(pathText);
+	listFolder(path);
 }
 
 /**
@@ -146,6 +189,7 @@ function onFileClicked (name, path, tag) {
 	console.log('folder: ' + name + ' ' + path);
 	if (tag == 'folder') {
 		listFolder(path);
+		renderPath(path);
 	} else {
 		currentFile     = name;
 		currentFilePath = path;
@@ -199,4 +243,14 @@ function printDocument(name, path) {
 		});
 
 	return false;
+}
+
+function showSpinner() {
+	var spinner = document.getElementById("spinner");
+	spinner.classList.toggle("show-loader");
+}
+
+function hideSpinner() {
+	var spinner = document.getElementById("spinner");
+	spinner.classList.toggle("show-loader");
 }

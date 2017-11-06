@@ -279,3 +279,28 @@ body {
   font-size: 20px;
   padding-left: 10px;
 }
+.loader {
+  position: fixed;
+  top: 40%;
+  left: 40%;
+  visibility: hidden;
+  border: 7px solid #535455;
+  border-top: 7px solid #0096d6;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  z-index: 5;
+  animation: spin 1s linear infinite;
+  -webkit-animation: spin 1s linear infinite;
+}
+.show-loader {
+  visibility: visible;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
