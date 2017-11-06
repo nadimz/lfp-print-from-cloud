@@ -1,13 +1,64 @@
+/* Color classes */
+.color-white {
+  color: #fff;
+}
+.color-hp-blue {
+  color: #0096d6;
+}
+.color-purple {
+  color: #6b3a97;
+}
+.color-dark-gray {
+  color: #87898b;
+}
+.color-darker-gray {
+  color: #535455;
+}
+.color-medium-gray {
+  color: #b9b8bb;
+}
+.background-white {
+  background: #fff;
+}
+.background-hp-blue {
+  background: #0096d6;
+}
+.background-purple {
+  background: #6b3a97;
+}
+.background-dark-gray {
+  background: #87898b;
+}
+.background-darker-gray {
+  background: #535455;
+}
+.background-medium-gray {
+  background: #b9b8bb;
+}
+.background-light-gray {
+  background: #e5e8e8;
+}
+/* fonts */
+@font-face {
+  font-family: "HP Simplified";
+  src: url("/resources/hp-simplified-lt.ttf");
+}
+@@font-face {
+  font-family: "HP Simplified";
+  src: url("/resources/hp-simplified-bold.ttf");
+  font-weight: bold;
+}
+/* styles */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";*/
+  font-family: "HP Simplified";
   line-height: 1.5;
 }
 #header {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #007ee5;
   width: 100%;
   height: 50px;
   padding: 0 0 0 0;
@@ -39,9 +90,8 @@ body {
 #title-text {
   display: inline-block;
   float: left;
-  color: #fff;
-  font-size: 17px;
-  font-weight: 300;
+  font-size: 18px;
+  padding-top: 4px;
   padding-left: 5px;
 }
 #subtitle {
@@ -52,12 +102,22 @@ body {
 #subtitle-logo {
   width: 100px;
 }
-
+#onedrive-subtitle {
+  float: right;
+  margin-right: 120px;
+  margin-top: -3px;
+}
+#onedrive-subtitle-log {
+  position: absolute;
+  width: 130px;
+  height: auto;
+  /*width: 80px;
+  height: auto;*/
+}
 #main {
   display: block;
   position: relative;
   top: 50px;
-  background: gray;
   width: 100%;
   max-width: 800px;
   margin: auto;
@@ -74,14 +134,12 @@ body {
 }
 #files-table tr {
   margin-left: 5px;
-  color: #007ee5;
   font-size: 16px;
   width: 100%;
   max-width: 800px;
 }
 #files-table td {
-  color: #696969;
-  font-size: 16px;
+  font-size: 18px;
   transition-duration: 0.10s;
   text-decoration: none;
   text-align: left;
@@ -92,12 +150,14 @@ body {
   width: 800px;
   max-width: 800px;
 
+  border-bottom: 1px solid #b9b8bb;
+
   background-position: 8px 8px;
   background-repeat: no-repeat;
   background-size: 35px;
 }
 #files-table td:hover {
-	color: #007ee5;
+	color: #0096d6;
   cursor: pointer;
 }
 #files-table td:active {
@@ -105,32 +165,34 @@ body {
 }
 .popup {
   position: fixed;
-  top: 20%;
-  left: 20%;
+  top: 30%;
+  left: 28.6%;
   visibility: hidden;
-  width: 60%;
-  background-color: white;
-  color: #696969;
-  text-align: center;
-  border: 1px solid #007ee5;
-  border-radius: 6px;
-  padding: 100px 0 100px 0;
+  width: 51.4%;
+  max-width: 600px;
+  border-top: 5px solid #0096d6;
+  border-bottom: 2px solid #535455;
+  border-radius: 2px;
+  padding: 80px 0 80px 0;
   z-index: 2;
 }
-.show {
+.popup-text {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+.show-popup {
   visibility: visible;
-  /*-webkit-animation: fadeIn 1s;
-  animation: fadeIn 1s*/
+  -webkit-animation: fadeIn 0.5s;
+  animation: fadeIn 0.5s
 }
 #button-print {
   position: absolute;
   bottom: 0;
   right: 0;
   padding: 10px 0 10px 0;
-  width: 120px;
-  border-radius: 3px;
-  background-color: #007ee5;
-  color: white;
+  width: 140px;
+  border-radius: 2px;
   text-align: center;
   z-index: 3;
   cursor: pointer;
@@ -138,12 +200,10 @@ body {
 #button-cancel {
   position: absolute;
   bottom: 0;
-  right: 130px;
+  right: 140px;
   padding: 10px 0 10px 0;
-  width: 120px;
-  border-radius: 3px;
-  background-color: #696969;
-  color: white;
+  width: 140px;
+  border-radius: 2px;
   text-align: center;
   z-index: 3;
   cursor: pointer;
@@ -158,32 +218,54 @@ body {
   from {opacity: 0;}
   to {opacity:1 ;}
 }
-.container {
-  display: block;
+.toast {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 4;
+  left: 50%;
+  bottom: 30px;
+}
+.show-toast {
+  visibility: visible;
+  -webkit-animation: toast-fadein 0.5s, toast-fadeout 0.5s 2.5s;
+  animation: toast-fadein 0.5s, toast-fadeout 0.5s 2.5s;
+}
+@-webkit-keyframes toast-fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes toast-fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes toast-fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes toast-fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+#apps-drawer {
+  position: absolute;
+  top: 100px;
+  display: flex;
   width: 100%;
   max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.container.main {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-top: 50px;
-}
-.container.file-browser {
-  display: flex;
-  padding-top: 5px;
 }
 .app {
-  display: fles;
   border-radius: 3px;
-  background-color: #007ee5;
   border: none;
-  color: #fff;
-  font-size: 16px;
+  font-size: 20px;
   padding: 10px 15px;
-  text-decoration: none;
   width: 150px;
   height: 50px;
   text-align: center;
@@ -191,36 +273,62 @@ body {
   vertical-align: middle;
   line-height: 50px;
 }
-.app:active {
-  background-color: #007ee5;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
-.file-row {
-  border-radius: 3px;
-  background-color: #fff;
-  color: #007ee5;
-  font-size: 16px;
-  transition-duration: 0.4s;
+.app a {
   text-decoration: none;
-  width: 100%;
-  text-align: left;
-  margin: 5px 0px;
-  vertical-align: middle;
-  line-height: 50px;
-  padding-left: 50px;
-
-  background-image: url('/resources/file_icon.svg');
-  background-position: left center;
+  padding: 20px 40px 20px 40px;
+}
+.app:active {
+  transform: translateY(2px);
+}
+#path {
+  display: flex;
+  flex-direction: row;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.path-entry {
+  font-size: 20px;
+  font-weight: bold;
+  padding-left: 10px;
+}
+.loader {
+  position: fixed;
+  top: 30%;
+  left: 45%;
+  visibility: hidden;
+  border: 7px solid #535455;
+  border-top: 7px solid #0096d6;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  z-index: 5;
+  animation: spin 1s linear infinite;
+  -webkit-animation: spin 1s linear infinite;
+}
+.show-loader {
+  visibility: visible;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+#app-dropbox {
+  background-image: url("https://cfl.dropboxstatic.com/static/images/brand/logotype_white-vflRG5Zd8.svg");
+  background-position: center;
   background-repeat: no-repeat;
-  background-size: 35px;
+  background-size: 120px;
+  margin: auto;
+  padding-left: 100px;
 }
-.file-row:hover {
-	background-color: #007ee5;
-	color: white;
-}
-.file-row:active {
-  background-color: #007ee5;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+#app-onedrive {
+  background-image: url("/resources/OneDrive_rgb_Wht.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 150px;
+  margin: auto;
+  padding-left: 100px;
 }

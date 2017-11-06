@@ -1,6 +1,8 @@
 var tokenCookie = "dropboxAccessToken";
 var CLIENT_ID = 'dn9zszriuvvvtn1';
 var dbx;
+var currentFile;
+var currentFilePath;
 
 if (isAuthenticated()) {
 	showPageSection('files-table');
@@ -11,12 +13,13 @@ if (isAuthenticated()) {
 	 */
 	dbx = new Dropbox({ accessToken: getAccessToken() });
 	listFolder('');
+	renderPath('');
 } else {
 	/**
 	 * Start OAuth2 process
 	 */
 	var dbx = new Dropbox({clientId: CLIENT_ID});
-	var authUrl = dbx.getAuthenticationUrl('http://127.0.0.1:8080/dropbox');
+	var authUrl = dbx.getAuthenticationUrl('https://lfp-print-from-cloud.herokuapp.com/dropbox');
 	window.location = authUrl;
 }
 
@@ -49,63 +52,21 @@ function getAccessToken() {
 	return accessToken;
 }
 
-function setCookie(cname, cvalue, exdays) {
-	var d = new Date();
-	d.setTime(d.getTime() + (exdays*24*60*60*1000));
-	var expires = "expires="+ d.toUTCString();
-	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-	var name = cname + "=";
-	var decodedCookie = decodeURIComponent(document.cookie);
-	var ca = decodedCookie.split(';');
-	for(var i = 0; i <ca.length; i++) {
-		var c = ca[i];
-		while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-			return c.substring(name.length, c.length);
-		}
-	}
-	return "";
-}
-
 /**
  * List a folder
  * @param  {string} folder [the path of the folder to list]
  */
 function listFolder(folder) {
+	showSpinner();
 	dbx.filesListFolder({path: folder})
 		.then(function(response) {
 			renderFiles(folder, response.entries);
+			hideSpinner();
+			scrollToTop();
 		})
 		.catch(function(error) {
 			console.error(error);
 		});
-}
-
-function getFileType(file) {
-	var n = file.lastIndexOf(".");
-	return file.substring(n + 1, file.length);
-}
-
-function getFileIcon(file) {
-	var type = getFileType(file);
-	if (type == 'txt') {
-		return "url('/resources/txt.svg')"
-	} else if (type == 'pdf') {
-		return "url('/resources/pdf.svg')"
-	} else if (type == 'jpg') {
-		return "url('/resources/jpg.svg')"
-	} else if (type == 'png') {
-		return "url('/resources/png.svg')"
-	} else if (type == 'doc') {
-		return "url('/resources/doc.svg')"
-	}
-
-	return "";
 }
 
 /**
@@ -125,6 +86,7 @@ function renderFiles(folder, files) {
 			onFileClicked(file.name, file.path_display, file['.tag'])
 		}, false);
 
+		fileRowEntry.classList.add("color-darker-gray");
 		/**
 		 * Set the file icon
 		 */
@@ -146,6 +108,78 @@ function renderFiles(folder, files) {
 	});
 }
 
+function renderPathEntry(path, fullPath) {
+	console.log('rendering ' + path);
+	var pathContainer = document.getElementById("path");
+	var pathEntry = document.createElement('div');
+	pathEntry.setAttribute('id', fullPath);
+	pathEntry.classList.add("path-entry");
+	pathEntry.classList.add("color-darker-gray");
+	pathEntry.innerHTML = path;
+	pathContainer.appendChild(pathEntry);
+}
+
+function setPathAncestorsAsLinks(path) {
+	var pathContainer = document.getElementById("path");
+	var children = pathContainer.children;
+	for (var i = 0; i < children.length; i++) {
+  	var child = children[i];
+		if((child.id != 'undefined') && (child.id != path)) {
+			console.log('setting ' + child.id + ' as a link');
+			child.addEventListener("click", function() {
+				onPathClicked(this.id);
+			}, false);
+			child.classList.remove("color-darker-gray");
+			child.classList.add("color-hp-blue");
+			child.style.cursor = "pointer";
+		}
+	}
+}
+
+function renderPath(path) {
+	if(path === '') {
+		renderPathEntry('Home', '/');
+		return;
+	}
+
+	renderPathEntry('>');
+
+	var pathText = path.slice(path.lastIndexOf('/') + 1, path.length);
+	renderPathEntry(pathText, path);
+
+	setPathAncestorsAsLinks(path);
+}
+
+function onPathClicked(path) {
+	console.log('onPathClicked: ' + path);
+	/**
+	 * List the folder and remove all children paths
+	 */
+	var found = false;
+	var pathContainer = document.getElementById("path");
+ 	var children = pathContainer.children;
+	var numOfChildren = children.length;
+	for (var i = numOfChildren - 1; true ; i--) {
+		var child = children[i];
+
+		if (child.id === path) {
+			found = true;
+ 			child.classList.remove("color-hp-blue");
+			child.classList.add("color-darker-gray");
+			child.style.cursor = "normal";
+			break;
+		} else {
+			pathContainer.removeChild(child);
+		}
+ 	}
+
+	if (path === '/') {
+		path = '';
+	}
+
+	listFolder(path);
+}
+
 /**
  * Triggered when the user clicks on a file
  * @param  {string} name [file name]
@@ -156,9 +190,12 @@ function onFileClicked (name, path, tag) {
 	console.log('folder: ' + name + ' ' + path);
 	if (tag == 'folder') {
 		listFolder(path);
+		renderPath(path);
 	} else {
+		currentFile     = name;
+		currentFilePath = path;
 		var printConfiration = document.getElementById("print-confirmation");
-    printConfiration.classList.toggle("show");
+    printConfiration.classList.toggle("show-popup");
 	}
 }
 
@@ -169,16 +206,12 @@ function onFileClicked (name, path, tag) {
  * @return {[type]}      [description]
  */
 function printDocument(name, path) {
-	console.log(name, path);
-	var doc = document.getElementById('doc');
-	doc.innerHTML = name;
-	showPageSection('print-section');
 	dbx.filesDownload({path: path})
 		.then(function(response) {
 			if(response.fileBlob !== undefined) {
-				console.log('Downloaded ' + response.name + '. Saving it..');
+				console.log('Downloaded ' + response.name);
 				var lfp = new Lfp();
-				lfp.printFileIPP(response.name, response.fileBlob);
+				lfp.print(response.name, response.fileBlob);
 			}
 		})
 		.catch(function(error) {
@@ -188,8 +221,23 @@ function printDocument(name, path) {
 	return false;
 }
 
-// This example keeps both the authenticate and non-authenticated setions
-// in the DOM and uses this function to show/hide the correct section.
-function showPageSection(elementId) {
-	document.getElementById(elementId).style.display = 'block';
+function onPrintClicked() {
+	// remove the popup
+	var printConfiration = document.getElementById("print-confirmation");
+	printConfiration.classList.toggle("show-popup");
+
+	// send file for printing
+	printDocument(currentFile, currentFilePath);
+
+	// notify the user
+	var toast = document.getElementById("print-toast");
+	toast.innerHTML = "File sent for printing";
+	toast.classList.toggle("show-toast");
+	setTimeout(function(){toast.classList.toggle("show-toast");}, 3000);
+}
+
+function onCancelClicked() {
+	// remove the popup
+	var printConfiration = document.getElementById("print-confirmation");
+	printConfiration.classList.toggle("show-popup");
 }

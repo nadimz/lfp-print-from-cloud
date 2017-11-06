@@ -29,5 +29,4 @@ var httpsServer = https.createServer(credentials, app);
 var port = process.env.PORT || 8080;
 
 app.listen(port);
-httpsServer.listen(4443);
 console.log("Express server listening on port " + port );

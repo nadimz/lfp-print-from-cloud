@@ -1,16 +1,16 @@
 <!doctype html>
 <html>
 <head>
-  <title>HP LFP Print From Cloud</title>
+  <title>HP LFP Print From Dropbox</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
-<body>
-  <div id="header">
+<body class="background-light-gray">
+  <div id="header" class="background-hp-blue">
     <div id="header-container">
 			<div id="title">
         <a id="title-link" href="/">
           <img src="/resources/HP_logo_72MD.png" id="title-logo" />
-          <div id=title-text>LFP Print From Cloud</div>
+          <div id=title-text class="color-white">LFP Print From Cloud</div>
         </a>
 			</div>
 			<div id="subtitle">
@@ -20,28 +20,30 @@
   </div>
 
   <div id="main">
-    <div class="popup" id="print-confirmation">
-      Send file for pinting
-      <div id="button-print">
+    <div id="print-toast" class="toast background-dark-gray color-white">
+    </div>
+    <div class="popup background-white color-darker-gray" id="print-confirmation">
+      <div class="popup-text">File ready for printing</div>
+      <div id="button-print" class="background-hp-blue color-white" onclick="onPrintClicked()">
         Print
       </div>
-      <div id="button-cancel">
+      <div id="button-cancel" class="background-dark-gray color-white" onclick="onCancelClicked()">
         Cancel
       </div>
     </div>
+    <div id="spinner" class="loader"></div>
+    <div id="path"></div>
   	<table id="files-table" style="width:100%" style="display:none">
       <thead id="files-table-header">
       </thead>
       <tbody id="files-table-body">
       </tbody>
     </table>
-  	<!--div id="print-section" style="display:none;">
-  		<p><a id="doc"></a>  will be now downloaded and printed. Please wait..</p>
-  	</div-->
   </div>
 
 	<script src="/scripts/Dropbox-sdk.min.js"></script>
 	<script src="/scripts/utils.js"></script>
+  <script src="/scripts/bundle.js"></script>
 	<script src="/scripts/app-dropbox.js"></script>
 </body>
 </html>
