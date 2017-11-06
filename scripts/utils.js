@@ -39,3 +39,52 @@
     }
   };
 })(window);
+
+function setCookie(cname, cvalue, exdays) {
+	var d = new Date();
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	var expires = "expires="+ d.toUTCString();
+	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for(var i = 0; i <ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return "";
+}
+
+function showPageSection(elementId) {
+	document.getElementById(elementId).style.display = 'block';
+}
+
+function getFileType(file) {
+	var n = file.lastIndexOf(".");
+	return file.substring(n + 1, file.length);
+}
+
+function getFileIcon(file) {
+	var type = getFileType(file);
+	if (type == 'txt') {
+		return "url('/resources/txt.svg')"
+	} else if (type == 'pdf') {
+		return "url('/resources/pdf.svg')"
+	} else if (type == 'jpg') {
+		return "url('/resources/jpg.svg')"
+	} else if (type == 'png') {
+		return "url('/resources/png.svg')"
+	} else if (type == 'doc') {
+		return "url('/resources/doc.svg')"
+	}
+
+	return "";
+}

@@ -51,29 +51,6 @@ function getAccessToken() {
 	return accessToken;
 }
 
-function setCookie(cname, cvalue, exdays) {
-	var d = new Date();
-	d.setTime(d.getTime() + (exdays*24*60*60*1000));
-	var expires = "expires="+ d.toUTCString();
-	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-	var name = cname + "=";
-	var decodedCookie = decodeURIComponent(document.cookie);
-	var ca = decodedCookie.split(';');
-	for(var i = 0; i <ca.length; i++) {
-		var c = ca[i];
-		while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-			return c.substring(name.length, c.length);
-		}
-	}
-	return "";
-}
-
 /**
  * List a folder
  * @param  {string} folder [the path of the folder to list]
@@ -82,32 +59,15 @@ function listFolder(folder) {
 	dbx.filesListFolder({path: folder})
 		.then(function(response) {
 			renderFiles(folder, response.entries);
+			if(folder == '') {
+				renderPath('Dropbox');
+			} else {
+				renderPath(folder);
+			}
 		})
 		.catch(function(error) {
 			console.error(error);
 		});
-}
-
-function getFileType(file) {
-	var n = file.lastIndexOf(".");
-	return file.substring(n + 1, file.length);
-}
-
-function getFileIcon(file) {
-	var type = getFileType(file);
-	if (type == 'txt') {
-		return "url('/resources/txt.svg')"
-	} else if (type == 'pdf') {
-		return "url('/resources/pdf.svg')"
-	} else if (type == 'jpg') {
-		return "url('/resources/jpg.svg')"
-	} else if (type == 'png') {
-		return "url('/resources/png.svg')"
-	} else if (type == 'doc') {
-		return "url('/resources/doc.svg')"
-	}
-
-	return "";
 }
 
 /**
@@ -147,6 +107,33 @@ function renderFiles(folder, files) {
 			fileRow.appendChild(fileRowEntry);
 		}
 	});
+}
+
+function renderPathEntry(path, fullPath) {
+	console.log('rendering ' + path);
+	var pathContainer = document.getElementById("path");
+	var pathEntry = document.createElement('div');
+	pathEntry.classList.add("path-entry");
+	pathEntry.classList.add("color-darker-gray");
+	pathEntry.innerHTML = path;
+	pathEntry.addEventListener("click", function() {
+		listFolder(path);
+	}, false);
+	pathContainer.appendChild(pathEntry);
+}
+
+function renderPath(currentPath) {
+	if(!currentPath) {
+		return;
+	}
+	var idxBegin = 1;
+	var idxEnd;
+	if ((idxEnd = currentPath.indexOf('/', idxBegin)) < 0) {
+		idxEnd = currentPath.length;
+	}
+
+	var pathText = currentPath.slice(idxBegin, idxEnd);
+	renderPathEntry(pathText);
 }
 
 /**
@@ -212,10 +199,4 @@ function printDocument(name, path) {
 		});
 
 	return false;
-}
-
-// This example keeps both the authenticate and non-authenticated setions
-// in the DOM and uses this function to show/hide the correct section.
-function showPageSection(elementId) {
-	document.getElementById(elementId).style.display = 'block';
 }
