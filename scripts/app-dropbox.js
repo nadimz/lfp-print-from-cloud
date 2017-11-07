@@ -62,6 +62,7 @@ function listFolder(folder) {
 		.then(function(response) {
 			renderFiles(folder, response.entries);
 			hideSpinner();
+			scrollToTop();
 		})
 		.catch(function(error) {
 			console.error(error);

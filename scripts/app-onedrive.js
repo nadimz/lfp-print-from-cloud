@@ -117,6 +117,7 @@ function listFolder(folderId) {
         });
         renderFiles(folder, entries);
   			hideSpinner();
+        scrollToTop();
     });
 }
 
@@ -154,7 +155,7 @@ function renderPath(id, path) {
 		return;
 	}
 
-	renderPathEntry('>', '>');
+	renderPathEntry(undefined, '>');
 
 	var pathText = path.slice(path.lastIndexOf('/') + 1, path.length);
 	renderPathEntry(id, pathText, path);
@@ -184,10 +185,6 @@ function onPathClicked(path) {
 			pathContainer.removeChild(child);
 		}
  	}
-
-	if (path === '/') {
-		path = '';
-	}
 
 	listFolder(path);
 }

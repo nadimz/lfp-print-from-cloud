@@ -36,7 +36,7 @@
   background: #b9b8bb;
 }
 .background-light-gray {
-  background: #e5E8E8;
+  background: #e5e8e8;
 }
 /* fonts */
 @font-face {
@@ -105,7 +105,7 @@ body {
 #onedrive-subtitle {
   float: right;
   margin-right: 120px;
-  margin-top: -5px;
+  margin-top: -3px;
 }
 #onedrive-subtitle-log {
   position: absolute;
@@ -315,4 +315,20 @@ body {
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
+}
+#app-dropbox {
+  background-image: url("https://cfl.dropboxstatic.com/static/images/brand/logotype_white-vflRG5Zd8.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 120px;
+  margin: auto;
+  padding-left: 120px;
+}
+#app-onedrive {
+  background-image: url("/resources/OneDrive_rgb_Wht.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 150px;
+  margin: auto;
+  padding-left: 150px;
 }

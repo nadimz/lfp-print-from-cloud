@@ -99,6 +99,10 @@ function hideSpinner() {
 	spinner.classList.toggle("show-loader");
 }
 
+function scrollToTop() {
+  window.scrollTo(0, 0);
+}
+
 function onPrintClicked() {
 	// remove the popup
 	var printConfiration = document.getElementById("print-confirmation");
@@ -109,7 +113,7 @@ function onPrintClicked() {
 
 	// notify the user
 	var toast = document.getElementById("print-toast");
-	toast.innerHTML = "File will now be printed";
+	toast.innerHTML = "File sent for printing";
 	toast.classList.toggle("show-toast");
 	setTimeout(function(){toast.classList.toggle("show-toast");}, 3000);
 }
