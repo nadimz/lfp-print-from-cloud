@@ -98,3 +98,24 @@ function hideSpinner() {
 	var spinner = document.getElementById("spinner");
 	spinner.classList.toggle("show-loader");
 }
+
+function onPrintClicked() {
+	// remove the popup
+	var printConfiration = document.getElementById("print-confirmation");
+	printConfiration.classList.toggle("show-popup");
+
+	// send file for printing
+	//printDocument(currentFile, currentFilePath);
+
+	// notify the user
+	var toast = document.getElementById("print-toast");
+	toast.innerHTML = "File will now be printed";
+	toast.classList.toggle("show-toast");
+	setTimeout(function(){toast.classList.toggle("show-toast");}, 3000);
+}
+
+function onCancelClicked() {
+	// remove the popup
+	var printConfiration = document.getElementById("print-confirmation");
+	printConfiration.classList.toggle("show-popup");
+}

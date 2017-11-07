@@ -102,7 +102,18 @@ body {
 #subtitle-logo {
   width: 100px;
 }
-
+#onedrive-subtitle {
+  float: right;
+  margin-right: 120px;
+  margin-top: -5px;
+}
+#onedrive-subtitle-log {
+  position: absolute;
+  width: 130px;
+  height: auto;
+  /*width: 80px;
+  height: auto;*/
+}
 #main {
   display: block;
   position: relative;
