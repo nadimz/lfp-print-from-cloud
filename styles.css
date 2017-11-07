@@ -277,6 +277,7 @@ body {
 }
 .path-entry {
   font-size: 20px;
+  font-weight: bold;
   padding-left: 10px;
 }
 .loader {

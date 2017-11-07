@@ -244,13 +244,3 @@ function printDocument(name, path) {
 
 	return false;
 }
-
-function showSpinner() {
-	var spinner = document.getElementById("spinner");
-	spinner.classList.toggle("show-loader");
-}
-
-function hideSpinner() {
-	var spinner = document.getElementById("spinner");
-	spinner.classList.toggle("show-loader");
-}
