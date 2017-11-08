@@ -166,7 +166,7 @@ body {
 .popup {
   position: fixed;
   top: 30%;
-  left: 24.6%;
+  left: 28.6%;
   visibility: hidden;
   width: 51.4%;
   max-width: 600px;
@@ -293,8 +293,8 @@ body {
 }
 .loader {
   position: fixed;
-  top: 40%;
-  left: 40%;
+  top: 30%;
+  left: 45%;
   visibility: hidden;
   border: 7px solid #535455;
   border-top: 7px solid #0096d6;
@@ -322,7 +322,7 @@ body {
   background-repeat: no-repeat;
   background-size: 120px;
   margin: auto;
-  padding-left: 120px;
+  padding-left: 100px;
 }
 #app-onedrive {
   background-image: url("/resources/OneDrive_rgb_Wht.png");
@@ -330,5 +330,5 @@ body {
   background-repeat: no-repeat;
   background-size: 150px;
   margin: auto;
-  padding-left: 150px;
+  padding-left: 100px;
 }
